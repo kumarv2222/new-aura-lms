@@ -176,20 +176,90 @@ const subjectsData = [
         ]
       }
     ]
+  },
+  {
+    title: 'Understanding Hugging Face',
+    slug: 'understanding-hugging-face',
+    description: 'Learn what Hugging Face is, how the Model Hub works, how to use Spaces, and how to access AI models through APIs — no prior ML experience needed.',
+    is_published: true,
+    sections: [
+      {
+        title: 'What is Hugging Face',
+        videos: [
+          { title: 'Introduction to Hugging Face', description: 'What Hugging Face is, why it exists, GitHub vs Hugging Face analogy, central place for AI development.', youtube_url: 'https://www.youtube.com/watch?v=tZd6R5ziNVI', duration_seconds: 600 },
+          { title: 'The Hugging Face Model Hub', description: 'Pre-trained models, model pages, descriptions, code snippets, API access, downloadable files, searching by task.', youtube_url: 'https://www.youtube.com/watch?v=QEaBAZQCtwE', duration_seconds: 540 },
+          { title: 'Why Hugging Face is Useful for Students', description: 'Removing barriers of huge datasets, expensive hardware, long training time. Explore ready-made models.', youtube_url: 'https://www.youtube.com/watch?v=_j7JEDWuqLE', duration_seconds: 480 },
+        ]
+      },
+      {
+        title: 'Hugging Face Spaces',
+        videos: [
+          { title: 'What is a Hugging Face Space?', description: 'Space as a small web app running an AI model, usable from a browser, turns AI model into usable web application.', youtube_url: 'https://www.youtube.com/watch?v=3bSVKNKb_PY', duration_seconds: 540 },
+          { title: 'Technologies Used in Spaces — Gradio & Streamlit', description: 'How Gradio and Streamlit create simple web interfaces for ML models.', youtube_url: 'https://www.youtube.com/watch?v=RiCQzBluTxU', duration_seconds: 600 },
+          { title: 'Deploying a Model in Spaces — Step by Step', description: 'Create HF account, create new Space, choose SDK, add application code, push code.', youtube_url: 'https://www.youtube.com/watch?v=C67EMIbS67M', duration_seconds: 660 },
+        ]
+      },
+      {
+        title: 'Accessing Models Through API',
+        videos: [
+          { title: 'What is the Hugging Face Inference API?', description: 'API stands for Application Programming Interface, how one application sends request to another and receives response.', youtube_url: 'https://www.youtube.com/watch?v=fgVn0OKOxhU', duration_seconds: 540 },
+          { title: 'Calling the HF API from JavaScript', description: 'Fetch request to HF API, Authorization Bearer token header, sending JSON input, receiving generated output.', youtube_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', duration_seconds: 600 },
+          { title: 'Example Flow — Text Generation End to End', description: 'Full example: User/Application -> Sends Input -> API or Space Interface -> Model Processes Input -> Prediction/Output Returned.', youtube_url: 'https://www.youtube.com/watch?v=aircAruvnKk', duration_seconds: 540 },
+        ]
+      }
+    ]
+  },
+  {
+    title: 'AI & ML Terminologies for Developers',
+    slug: 'ai-ml-terminologies',
+    description: 'Understand the core vocabulary of AI — from Artificial Intelligence and Machine Learning to LLMs and SLMs. Essential foundation before building AI-powered applications.',
+    is_published: true,
+    sections: [
+      {
+        title: 'Core AI Concepts',
+        videos: [
+          { title: 'What is Artificial Intelligence?', description: 'AI is broad field in CS to build machines performing tasks requiring human intelligence.', youtube_url: 'https://www.youtube.com/watch?v=ad79nYk2keg', duration_seconds: 480 },
+          { title: 'Machine Learning Explained', description: 'ML is sub-field of AI, teach computer using data so it learns patterns by itself.', youtube_url: 'https://www.youtube.com/watch?v=ukzFI9rgwfU', duration_seconds: 540 },
+          { title: 'What is a Model?', description: 'In AI/ML a model is a program that learned patterns from data and can make predictions/decisions.', youtube_url: 'https://www.youtube.com/watch?v=CqGHbyGMpHI', duration_seconds: 480 },
+        ]
+      },
+      {
+        title: 'Advanced AI Concepts',
+        videos: [
+          { title: 'Deep Learning & Neural Networks', description: 'Deep Learning is advanced type of ML, inspired by human brain, uses neural networks.', youtube_url: 'https://www.youtube.com/watch?v=aircAruvnKk', duration_seconds: 600 },
+          { title: 'Natural Language Processing (NLP)', description: 'NLP field inside AI focused on understanding human language.', youtube_url: 'https://www.youtube.com/watch?v=fOvTtapxa9c', duration_seconds: 540 },
+          { title: 'AI Model vs ML Model — Key Differences', description: 'AI Model = trained system performing intelligent task. ML Model = result of machine learning training.', youtube_url: 'https://www.youtube.com/watch?v=PeMlggyqz6Y', duration_seconds: 480 },
+        ]
+      },
+      {
+        title: 'Language Models',
+        videos: [
+          { title: 'What is a Large Language Model (LLM)?', description: 'LLM is very powerful AI model designed to understand and generate human language.', youtube_url: 'https://www.youtube.com/watch?v=iR2O2GPbB0E', duration_seconds: 600 },
+          { title: 'Small Language Models (SLM) Explained', description: 'SLM similar to LLM but much smaller in size and computational requirements.', youtube_url: 'https://www.youtube.com/watch?v=0SBmQWNXGWI', duration_seconds: 540 },
+          { title: 'LLM vs SLM — When to Use Which?', description: 'Summary of full AI hierarchy and when to choose LLM vs SLM.', youtube_url: 'https://www.youtube.com/watch?v=zjkBMFhNj_g', duration_seconds: 480 },
+        ]
+      }
+    ]
   }
 ];
 
 async function seed() {
   console.log('🌱 Starting database seed script...');
 
+  let totalSubjects = 0;
+  let totalSections = 0;
+  let totalVideos = 0;
+
   try {
     // 1. Delete all existing data in reverse dependency order
     console.log('🧹 Clearing existing data...');
     await db('video_progress').del();
     await db('enrollments').del();
+    await db('refresh_tokens').del();
     await db('videos').del();
     await db('sections').del();
     await db('subjects').del();
+    await db('users').del();
     console.log('✅ Data cleared successfully.');
 
     // 2. Insert Subjects
@@ -202,6 +272,7 @@ async function seed() {
         is_published: subjectData.is_published,
       });
 
+      totalSubjects++;
       console.log(`  ➔ Added subject: ${subjectData.title} (ID: ${subjectId})`);
 
       // 3. Insert Sections for Subject
@@ -212,6 +283,7 @@ async function seed() {
           order_index: sectionIndex + 1,
         });
 
+        totalSections++;
         console.log(`      ➔ Added section: ${sectionData.title}`);
 
         // 4. Insert Videos for Section
@@ -225,15 +297,24 @@ async function seed() {
             order_index: videoOrder++,
             duration_seconds: videoData.duration_seconds,
           });
+          totalVideos++;
         }
       }
     }
 
     console.log('\n🎉 Successfully seeded all courses, sections, and videos!');
+    
+    console.log('\n📊 SEED SUMMARY:');
+    console.table([
+      { Type: 'Subjects', Total: totalSubjects },
+      { Type: 'Sections', Total: totalSections },
+      { Type: 'Videos', Total: totalVideos },
+    ]);
+
   } catch (error) {
     console.error('❌ Error during seeding:', error);
   } finally {
-    console.log('🔌 Destroying database connection...');
+    console.log('\n🔌 Destroying database connection...');
     await db.destroy();
   }
 }
