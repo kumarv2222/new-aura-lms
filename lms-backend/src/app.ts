@@ -15,7 +15,11 @@ const app = express();
 
 // ── Core middleware ──────────────────────────────────────────
 app.use(cors({
-  origin: env.cors.origin,
+  origin: (origin, callback) => {
+    // Allow any origin during transition/deployment for testing, 
+    // or set a list later for security.
+    callback(null, true);
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
