@@ -68,7 +68,7 @@ export default function AIPage() {
               </div>
               <div className="flex flex-col gap-1">
                  <h3 className="text-xl font-serif text-white uppercase tracking-wider">Expert Guidance</h3>
-                 <p className="text-sm text-slate-text italic opacity-60">"Ask me about specific code blocks or complex theories."</p>
+                 <p className="text-sm text-slate-text italic opacity-60">&quot;Ask me about specific code blocks or complex theories.&quot;</p>
               </div>
            </div>
            
