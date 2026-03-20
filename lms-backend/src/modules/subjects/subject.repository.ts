@@ -1,10 +1,27 @@
 import { db } from '../../config/db';
 
-export const findAllPublished = async (page: number, pageSize: number, q?: string) => {
+export const findAllPublished = async (page: number, pageSize: number, q?: string, category?: string) => {
   const query = db('subjects').where('is_published', true);
-  if (q) query.whereILike('title', `%${q}%`);
+  
+  if (q) {
+    query.whereILike('title', `%${q}%`);
+  }
+
+  if (category && category !== 'All Courses') {
+    query.where('category', category);
+  }
+
+  // Count total for pagination
   const [{ count }] = await query.clone().count('id as count');
-  const rows = await query.orderBy('created_at', 'desc').limit(pageSize).offset((page - 1) * pageSize);
+
+  // Select all fields AND calculate total_lessons on the fly just to be sure, although column exists
+  const rows = await query
+    .select('subjects.*')
+    .select(db.raw('(SELECT count(*) FROM videos v JOIN sections s ON v.section_id = s.id WHERE s.subject_id = subjects.id) as total_lessons'))
+    .orderBy('created_at', 'desc')
+    .limit(pageSize)
+    .offset((page - 1) * pageSize);
+
   return { subjects: rows, total: Number(count), page, pageSize };
 };
 

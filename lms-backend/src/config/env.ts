@@ -30,4 +30,10 @@ export const env = {
   cookie: {
     domain: process.env.COOKIE_DOMAIN || 'localhost',
   },
+  huggingface: {
+    apiKey: process.env.HUGGINGFACE_API_KEY || '',
+  },
+  groq: {
+    apiKey: process.env.GROQ_API_KEY || '',
+  },
 };

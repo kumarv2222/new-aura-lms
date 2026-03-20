@@ -6,7 +6,8 @@ export const listSubjects = async (req: Request, res: Response, next: NextFuncti
     const page = parseInt(req.query.page as string) || 1;
     const pageSize = parseInt(req.query.pageSize as string) || 12;
     const q = req.query.q as string | undefined;
-    res.json(await service.listSubjects(page, pageSize, q));
+    const category = req.query.category as string | undefined;
+    res.json(await service.listSubjects(page, pageSize, q, category));
   } catch (err) { next(err); }
 };
 

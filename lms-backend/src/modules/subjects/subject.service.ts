@@ -1,8 +1,8 @@
 import { AppError } from '../../middleware/errorHandler';
 import * as repo from './subject.repository';
 
-export const listSubjects = async (page = 1, pageSize = 12, q?: string) => {
-  return repo.findAllPublished(page, pageSize, q);
+export const listSubjects = async (page = 1, pageSize = 12, q?: string, category?: string) => {
+  return repo.findAllPublished(page, pageSize, q, category);
 };
 
 export const getSubject = async (id: number) => {

@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { BookOpen, CheckCircle2, TrendingUp, Clock, ArrowRight } from 'lucide-react';
+import { BookOpen, CheckCircle2, TrendingUp, Clock, ArrowRight, User, Award, ShieldCheck, Zap } from 'lucide-react';
 import AppShell from '../../components/Layout/AppShell';
 import AuthGuard from '../../components/Auth/AuthGuard';
 import { useAuthStore } from '../../store/authStore';
@@ -43,87 +43,118 @@ export default function ProfilePage() {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen" style={{ background: '#0a0a0f' }}>
+      <div className="min-h-screen bg-[#0a0a0f] pb-20">
         <AppShell />
 
-        <div className="max-w-4xl mx-auto px-6 pt-24 pb-16">
-          {/* Header */}
-          <div className="mb-10 animate-fade-up">
-            <div className="flex items-center gap-4 mb-2">
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-bold"
-                style={{ background: 'linear-gradient(135deg, #f0b429, #c9922a)', color: '#0a0a0f' }}>
-                {user?.email?.[0]?.toUpperCase()}
+        <div className="max-w-6xl mx-auto px-6 pt-24">
+          {/* Dashboard Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 animate-fade-up">
+            <div className="flex items-center gap-6">
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-tr from-gold to-gold-light rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200" />
+                <div className="relative w-20 h-20 rounded-2xl flex items-center justify-center text-4xl font-serif bg-slate-glass border border-gold/20 text-gold group-hover:scale-105 transition-transform">
+                  {user?.email?.[0]?.toUpperCase()}
+                </div>
               </div>
-              <div>
-                <h1 className="section-heading text-2xl text-white">{user?.email?.split('@')[0]}</h1>
-                <p className="text-sm text-slate-text">{user?.email}</p>
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h1 className="font-serif text-3xl text-white tracking-tight">Welcome, {user?.email?.split('@')[0]}</h1>
+                  <ShieldCheck size={18} className="text-gold" />
+                </div>
+                <p className="text-slate-text text-sm font-medium opacity-80 uppercase tracking-[0.15em] flex items-center gap-2">
+                   {user?.email} • <span className="text-gold">Aura Member</span>
+                </p>
               </div>
+            </div>
+            <div className="flex items-center gap-4">
+               <div className="px-5 py-3 rounded-2xl bg-gold/5 border border-gold/10 flex items-center gap-3">
+                  <Award size={18} className="text-gold" />
+                  <span className="text-xs font-bold uppercase tracking-widest text-white">Certified Learner</span>
+               </div>
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 mb-10">
+          {/* Core Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 px-1">
             {[
-              { label: 'Courses enrolled', value: subjects.length, icon: BookOpen, color: '#f0b429' },
-              { label: 'Lessons done', value: totalCompleted, icon: CheckCircle2, color: '#00c9a7' },
-              { label: 'Avg. progress', value: `${avgProgress}%`, icon: TrendingUp, color: '#7c5fe6' },
-            ].map(({ label, value, icon: Icon, color }) => (
-              <div key={label} className="glass rounded-2xl p-5 animate-fade-up">
-                <div className="w-9 h-9 rounded-lg flex items-center justify-center mb-3"
-                  style={{ background: `${color}18`, border: `1px solid ${color}30` }}>
-                  <Icon size={16} style={{ color }} />
+              { label: 'Courses Enrolled', value: subjects.length, icon: BookOpen, color: '#f0b429' },
+              { label: 'Lessons Mastered', value: totalCompleted, icon: CheckCircle2, color: '#00c9a7' },
+              { label: 'Global Progress', value: `${avgProgress}%`, icon: Zap, color: '#f0b429' },
+            ].map((stat, i) => (
+              <div key={i} className="glass-card p-8 rounded-[2rem] border border-slate-border/50 relative group overflow-hidden animate-fade-up" style={{ animationDelay: `${i * 0.1}s` }}>
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gold/5 blur-3xl group-hover:bg-gold/10 transition-colors pointer-events-none" />
+                <div className="flex flex-col gap-4">
+                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-slate-glass border border-slate-border text-gold group-hover:scale-110 transition-transform">
+                      <stat.icon size={20} />
+                   </div>
+                   <div>
+                      <p className="text-2xl font-bold text-white tracking-tight">{stat.value}</p>
+                      <p className="text-[10px] uppercase font-bold tracking-widest text-slate-text mt-1">{stat.label}</p>
+                   </div>
                 </div>
-                <div className="text-2xl font-semibold text-white mb-1">{value}</div>
-                <div className="text-xs text-slate-text">{label}</div>
               </div>
             ))}
           </div>
 
-          {/* Course progress list */}
-          <h2 className="section-heading text-xl text-white mb-5">Your courses</h2>
+          {/* Courses & Activity Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-12 px-1">
+            <div className="flex flex-col gap-8">
+              <div className="flex items-center justify-between">
+                <h2 className="font-serif text-2xl text-white">Your Learning Journey</h2>
+                <Link href="/" className="text-xs font-bold uppercase tracking-widest text-gold hover:text-gold-light transition-colors">Browse Marketplace</Link>
+              </div>
 
-          {loading ? (
-            <div className="flex justify-center py-12"><Spinner size={28} /></div>
-          ) : subjects.length === 0 ? (
-            <div className="glass rounded-2xl p-12 text-center">
-              <BookOpen size={32} className="text-slate-text mx-auto mb-4 opacity-40" />
-              <p className="text-slate-text mb-4">No courses started yet</p>
-              <Link href="/" className="btn-gold inline-flex items-center gap-2 text-sm">
-                Browse courses <ArrowRight size={14} />
-              </Link>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {subjects.map((s, i) => (
-                <div key={s.id} className="glass-hover rounded-2xl p-5 animate-fade-up flex items-center gap-5"
-                  style={{ animationDelay: `${i * 0.05}s`, animationFillMode: 'both' }}>
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ background: 'rgba(240,180,41,0.1)', border: '1px solid rgba(240,180,41,0.2)' }}>
-                    <BookOpen size={16} className="text-gold" />
-                  </div>
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-1">
-                      <h3 className="text-sm font-medium text-white truncate">{s.title}</h3>
-                      <span className="text-xs font-medium ml-4 shrink-0" style={{ color: s.percent_complete === 100 ? '#00c9a7' : '#f0b429' }}>
-                        {s.percent_complete}%
-                      </span>
-                    </div>
-                    <div className="progress-bar h-1.5 mb-1.5">
-                      <div className="progress-fill h-full" style={{ width: `${s.percent_complete}%` }} />
-                    </div>
-                    <p className="text-xs text-slate-text">{s.completed_videos}/{s.total_videos} lessons</p>
-                  </div>
-
-                  <Link href={s.last_video_id ? `/subjects/${s.id}/video/${s.last_video_id}` : `/subjects/${s.id}`}
-                    className="shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium glass-hover"
-                    style={{ color: '#f0b429' }}>
-                    Continue <ArrowRight size={12} />
+              {loading ? (
+                <div className="flex flex-col items-center justify-center py-24 gap-4 glass-card rounded-3xl border border-slate-border/30">
+                  <Spinner size={32} />
+                  <p className="text-slate-text animate-pulse uppercase tracking-widest text-[10px]">Syncing Progress...</p>
+                </div>
+              ) : subjects.length === 0 ? (
+                <div className="glass-card p-16 rounded-[2.5rem] border border-slate-border/50 text-center animate-fade-up">
+                  <BookOpen size={48} className="text-slate-text mx-auto mb-6 opacity-20" />
+                  <p className="text-slate-text mb-8 text-lg font-serif italic">"Every master was once a beginner."</p>
+                  <Link href="/" className="px-10 py-4 bg-gold rounded-2xl text-black font-bold uppercase tracking-widest text-xs hover:bg-gold-light transition-all shadow-xl shadow-gold/20">
+                    Explore Free Courses
                   </Link>
                 </div>
-              ))}
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {subjects.map((s, i) => (
+                    <div key={s.id} className="glass-card p-8 rounded-[2.5rem] border border-slate-border/30 hover:border-gold/30 transition-all group animate-fade-up"
+                      style={{ animationDelay: `${i * 0.05}s` }}>
+                      <div className="flex flex-col gap-6">
+                        <div className="flex items-start justify-between">
+                          <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-slate-glass border border-slate-border text-gold group-hover:scale-110 transition-transform">
+                            <BookOpen size={20} />
+                          </div>
+                          <span className={`text-[10px] font-bold uppercase tracking-widest py-1 px-3 rounded-full ${s.percent_complete === 100 ? 'bg-jade/10 text-jade border border-jade/20' : 'bg-gold/10 text-gold border border-gold/20'}`}>
+                            {s.percent_complete === 100 ? 'Mastered' : 'In Progress'}
+                          </span>
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                          <h3 className="font-serif text-xl text-white group-hover:text-gold transition-colors truncate">{s.title}</h3>
+                          <div className="flex items-center justify-between text-[10px] font-bold tracking-widest text-slate-text uppercase">
+                            <span>{s.completed_videos} lessons completed</span>
+                            <span className="text-white">{s.percent_complete}%</span>
+                          </div>
+                          <div className="progress-bar h-1.5 mt-1">
+                            <div className="progress-fill h-full" style={{ width: `${s.percent_complete}%` }} />
+                          </div>
+                        </div>
+
+                        <Link href={s.last_video_id ? `/subjects/${s.id}/video/${s.last_video_id}` : `/subjects/${s.id}`}
+                          className="w-full py-4 rounded-2xl bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest text-[10px] hover:bg-gold hover:text-black hover:border-gold transition-all text-center flex items-center justify-center gap-2">
+                          {s.percent_complete === 100 ? 'Review Course' : 'Continue Learning'}
+                          <ArrowRight size={14} />
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </AuthGuard>

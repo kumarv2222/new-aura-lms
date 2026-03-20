@@ -3,7 +3,13 @@ import { db } from '../src/config/db';
 async function runMigrations() {
   console.log('🔄 Running migrations...');
 
-  await db.schema.createTableIfNotExists('users', (t) => {
+  const ensureTable = async (tableName: string, callback: (t: any) => void) => {
+    if (!(await db.schema.hasTable(tableName))) {
+      await db.schema.createTable(tableName, callback);
+    }
+  };
+
+  await ensureTable('users', (t) => {
     t.bigIncrements('id').primary();
     t.string('email', 255).notNullable().unique();
     t.string('password_hash', 512).notNullable();
@@ -12,18 +18,44 @@ async function runMigrations() {
     t.index('email');
   });
 
-  await db.schema.createTableIfNotExists('subjects', (t) => {
+  await ensureTable('subjects', (t) => {
     t.increments('id').primary();
     t.string('title', 255).notNullable();
     t.string('slug', 255).notNullable().unique();
     t.text('description');
     t.string('thumbnail_url', 512);
+    t.string('instructor_name', 255);
+    t.string('instructor_channel', 255);
+    t.string('category', 100);
+    t.enum('level', ['Beginner', 'Intermediate', 'Advanced']).defaultTo('Beginner');
+    t.integer('duration_weeks');
+    t.decimal('rating', 2, 1).defaultTo(4.5);
+    t.integer('total_lessons');
+    t.boolean('is_free').defaultTo(true);
     t.boolean('is_published').defaultTo(false);
     t.timestamps(true, true);
     t.index('slug');
   });
 
-  await db.schema.createTableIfNotExists('sections', (t) => {
+  // Ensure columns exist for subjects
+  const cols = [
+    { name: 'instructor_name', add: (t: any) => t.string('instructor_name', 255) },
+    { name: 'instructor_channel', add: (t: any) => t.string('instructor_channel', 255) },
+    { name: 'category', add: (t: any) => t.string('category', 100) },
+    { name: 'level', add: (t: any) => t.enum('level', ['Beginner', 'Intermediate', 'Advanced']).defaultTo('Beginner') },
+    { name: 'duration_weeks', add: (t: any) => t.integer('duration_weeks') },
+    { name: 'rating', add: (t: any) => t.decimal('rating', 2, 1).defaultTo(4.5) },
+    { name: 'total_lessons', add: (t: any) => t.integer('total_lessons') },
+    { name: 'is_free', add: (t: any) => t.boolean('is_free').defaultTo(true) },
+  ];
+
+  for (const col of cols) {
+    if (!(await db.schema.hasColumn('subjects', col.name))) {
+      await db.schema.alterTable('subjects', (t) => col.add(t));
+    }
+  }
+
+  await ensureTable('sections', (t) => {
     t.increments('id').primary();
     t.integer('subject_id').unsigned().notNullable().references('id').inTable('subjects').onDelete('CASCADE');
     t.string('title', 255).notNullable();
@@ -32,7 +64,7 @@ async function runMigrations() {
     t.unique(['subject_id', 'order_index']);
   });
 
-  await db.schema.createTableIfNotExists('videos', (t) => {
+  await ensureTable('videos', (t) => {
     t.increments('id').primary();
     t.integer('section_id').unsigned().notNullable().references('id').inTable('sections').onDelete('CASCADE');
     t.string('title', 255).notNullable();
@@ -44,7 +76,7 @@ async function runMigrations() {
     t.unique(['section_id', 'order_index']);
   });
 
-  await db.schema.createTableIfNotExists('enrollments', (t) => {
+  await ensureTable('enrollments', (t) => {
     t.increments('id').primary();
     t.bigInteger('user_id').unsigned().notNullable().references('id').inTable('users').onDelete('CASCADE');
     t.integer('subject_id').unsigned().notNullable().references('id').inTable('subjects').onDelete('CASCADE');
@@ -52,7 +84,7 @@ async function runMigrations() {
     t.unique(['user_id', 'subject_id']);
   });
 
-  await db.schema.createTableIfNotExists('video_progress', (t) => {
+  await ensureTable('video_progress', (t) => {
     t.increments('id').primary();
     t.bigInteger('user_id').unsigned().notNullable().references('id').inTable('users').onDelete('CASCADE');
     t.integer('video_id').unsigned().notNullable().references('id').inTable('videos').onDelete('CASCADE');
@@ -63,7 +95,7 @@ async function runMigrations() {
     t.unique(['user_id', 'video_id']);
   });
 
-  await db.schema.createTableIfNotExists('refresh_tokens', (t) => {
+  await ensureTable('refresh_tokens', (t) => {
     t.increments('id').primary();
     t.bigInteger('user_id').unsigned().notNullable().references('id').inTable('users').onDelete('CASCADE');
     t.string('token_hash', 512).notNullable();

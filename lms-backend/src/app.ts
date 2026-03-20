@@ -9,6 +9,7 @@ import subjectRoutes from './modules/subjects/subject.routes';
 import videoRoutes from './modules/videos/video.routes';
 import progressRoutes from './modules/progress/progress.routes';
 import healthRoutes from './modules/health/health.routes';
+import aiRoutes from './modules/ai/ai.routes';
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use('/api/subjects', subjectRoutes);
 app.use('/api/videos', videoRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/health', healthRoutes);
+app.use('/api/ai', aiRoutes);
 
 // 404
 app.use((_req, res) => res.status(404).json({ error: 'NotFound', message: 'Route not found' }));

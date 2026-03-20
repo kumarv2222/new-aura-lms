@@ -6,6 +6,13 @@ const subjectsData = [
     slug: 'javascript-fundamentals',
     description: 'Master the core language of the web, from variables to asynchronous programming. Perfect for beginners and those looking to solidify their JS knowledge.',
     is_published: true,
+    instructor_name: 'Hitesh Choudhary',
+    instructor_channel: 'Chai aur Code',
+    category: 'Web Dev',
+    level: 'Beginner',
+    duration_weeks: 8,
+    rating: 4.7,
+    thumbnail_url: 'https://img.youtube.com/vi/W6NZfCO5SIk/maxresdefault.jpg',
     sections: [
       {
         title: 'Getting Started',
@@ -46,6 +53,13 @@ const subjectsData = [
     slug: 'react-for-beginners',
     description: 'Learn the most popular frontend library. Build interactive user interfaces with components and hooks.',
     is_published: true,
+    instructor_name: 'Akshay Saini',
+    instructor_channel: 'Namaste JavaScript',
+    category: 'Web Dev',
+    level: 'Beginner',
+    duration_weeks: 10,
+    rating: 4.8,
+    thumbnail_url: 'https://img.youtube.com/vi/SqcY0GlETPk/maxresdefault.jpg',
     sections: [
       {
         title: 'React Basics',
@@ -78,6 +92,13 @@ const subjectsData = [
     slug: 'nodejs-express-api',
     description: 'Build fast, scalable backend APIs using the JavaScript ecosystem.',
     is_published: true,
+    instructor_name: 'Piyush Garg',
+    instructor_channel: 'Piyush Garg',
+    category: 'Web Dev',
+    level: 'Intermediate',
+    duration_weeks: 8,
+    rating: 4.6,
+    thumbnail_url: 'https://img.youtube.com/vi/TlB_eWDSMt4/maxresdefault.jpg',
     sections: [
       {
         title: 'Node.js Fundamentals',
@@ -110,6 +131,13 @@ const subjectsData = [
     slug: 'python-for-data-science',
     description: 'Enter the world of data science with Python. Covers basics up to data analysis with Pandas.',
     is_published: true,
+    instructor_name: 'Shradha Khapra',
+    instructor_channel: 'Apna College',
+    category: 'Data Science',
+    level: 'Beginner',
+    duration_weeks: 10,
+    rating: 4.7,
+    thumbnail_url: 'https://img.youtube.com/vi/kqtD5dpn9C8/maxresdefault.jpg',
     sections: [
       {
         title: 'Python Basics',
@@ -134,6 +162,13 @@ const subjectsData = [
     slug: 'css-tailwind-mastery',
     description: 'Learn advanced CSS techniques and master the Tailwind CSS utility-first framework.',
     is_published: true,
+    instructor_name: 'Kevin Powell',
+    instructor_channel: 'Kevin Powell',
+    category: 'Web Dev',
+    level: 'Beginner',
+    duration_weeks: 6,
+    rating: 4.8,
+    thumbnail_url: 'https://img.youtube.com/vi/fYq5PXgSsbE/maxresdefault.jpg',
     sections: [
       {
         title: 'CSS Foundations',
@@ -158,6 +193,13 @@ const subjectsData = [
     slug: 'typescript-deep-dive',
     description: 'Add types to your JavaScript to write safer and more maintainable code.',
     is_published: true,
+    instructor_name: 'Matt Pocock',
+    instructor_channel: 'Total TypeScript',
+    category: 'Web Dev',
+    level: 'Intermediate',
+    duration_weeks: 8,
+    rating: 4.6,
+    thumbnail_url: 'https://img.youtube.com/vi/BwuLxPH8IDs/maxresdefault.jpg',
     sections: [
       {
         title: 'TypeScript Basics',
@@ -182,6 +224,13 @@ const subjectsData = [
     slug: 'understanding-hugging-face',
     description: 'Learn what Hugging Face is, how the Model Hub works, how to use Spaces, and how to access AI models through APIs — no prior ML experience needed.',
     is_published: true,
+    instructor_name: 'Patrick von Platen',
+    instructor_channel: 'Hugging Face',
+    category: 'AI & ML',
+    level: 'Beginner',
+    duration_weeks: 6,
+    rating: 4.5,
+    thumbnail_url: 'https://img.youtube.com/vi/tZd6R5ziNVI/maxresdefault.jpg',
     sections: [
       {
         title: 'What is Hugging Face',
@@ -214,6 +263,13 @@ const subjectsData = [
     slug: 'ai-ml-terminologies',
     description: 'Understand the core vocabulary of AI — from Artificial Intelligence and Machine Learning to LLMs and SLMs. Essential foundation before building AI-powered applications.',
     is_published: true,
+    instructor_name: 'Andrew Ng',
+    instructor_channel: 'DeepLearning.AI',
+    category: 'AI & ML',
+    level: 'Beginner',
+    duration_weeks: 4,
+    rating: 4.9,
+    thumbnail_url: 'https://img.youtube.com/vi/ad79nYk2keg/maxresdefault.jpg',
     sections: [
       {
         title: 'Core AI Concepts',
@@ -237,6 +293,79 @@ const subjectsData = [
           { title: 'What is a Large Language Model (LLM)?', description: 'LLM is very powerful AI model designed to understand and generate human language.', youtube_url: 'https://www.youtube.com/watch?v=iR2O2GPbB0E', duration_seconds: 600 },
           { title: 'Small Language Models (SLM) Explained', description: 'SLM similar to LLM but much smaller in size and computational requirements.', youtube_url: 'https://www.youtube.com/watch?v=0SBmQWNXGWI', duration_seconds: 540 },
           { title: 'LLM vs SLM — When to Use Which?', description: 'Summary of full AI hierarchy and when to choose LLM vs SLM.', youtube_url: 'https://www.youtube.com/watch?v=zjkBMFhNj_g', duration_seconds: 480 },
+        ]
+      }
+    ]
+  },
+  {
+    title: 'SAP ABAP for Beginners',
+    slug: 'sap-abap-beginners',
+    description: 'Start your journey into SAP development with ABAP. Learn the fundamentals of ERP systems and business logic.',
+    is_published: true,
+    instructor_name: 'Anubhav Oberoy',
+    instructor_channel: 'Anubhav Trainings',
+    category: 'SAP',
+    level: 'Beginner',
+    duration_weeks: 12,
+    rating: 4.6,
+    thumbnail_url: 'https://img.youtube.com/vi/qR4b7nJ7pQA/maxresdefault.jpg',
+    sections: [
+      {
+        title: 'Introduction to SAP',
+        videos: [
+          { title: 'What is SAP?', description: 'Understanding ERP and the SAP ecosystem.', youtube_url: 'https://www.youtube.com/watch?v=qR4b7nJ7pQA', duration_seconds: 600 },
+          { title: 'SAP Architecture', description: 'The 3-tier architecture of SAP systems.', youtube_url: 'https://www.youtube.com/watch?v=Xh_KogTpsaM', duration_seconds: 540 },
+        ]
+      },
+      {
+        title: 'ABAP Basics',
+        videos: [
+          { title: 'Your First ABAP Program', description: 'Writing Hello World in ABAP.', youtube_url: 'https://www.youtube.com/watch?v=sc6S92f6F1I', duration_seconds: 480 },
+          { title: 'Data Types and Objects', description: 'Variables and constants in ABAP.', youtube_url: 'https://www.youtube.com/watch?v=xZ_pA78eR8o', duration_seconds: 700 },
+        ]
+      }
+    ]
+  },
+  {
+    title: 'Flutter Mobile App Dev',
+    slug: 'flutter-app-dev',
+    description: 'Build beautiful native applications for iOS and Android with a single codebase using Flutter and Dart.',
+    is_published: true,
+    instructor_name: 'Srivatsav',
+    instructor_channel: 'Hybrid App Dev',
+    category: 'App Dev',
+    level: 'Beginner',
+    duration_weeks: 10,
+    rating: 4.8,
+    thumbnail_url: 'https://img.youtube.com/vi/VPvVD8t02U8/maxresdefault.jpg',
+    sections: [
+      {
+        title: 'Widgets 101',
+        videos: [
+          { title: 'Intro to Widgets', description: 'Everything is a widget in Flutter.', youtube_url: 'https://www.youtube.com/watch?v=VPvVD8t02U8', duration_seconds: 900 },
+          { title: 'Stateless vs Stateful', description: 'Managing state in Flutter apps.', youtube_url: 'https://www.youtube.com/watch?v=0_u6eX6o7O4', duration_seconds: 600 },
+        ]
+      }
+    ]
+  },
+  {
+    title: 'Mastering Data Structures',
+    slug: 'mastering-dsa',
+    description: 'Prepare for big tech interviews by mastering the algorithms and data structures that matter.',
+    is_published: true,
+    instructor_name: 'Striver',
+    instructor_channel: 'take U forward',
+    category: 'DSA',
+    level: 'Advanced',
+    duration_weeks: 16,
+    rating: 4.9,
+    thumbnail_url: 'https://img.youtube.com/vi/EAR7De6Gug4/maxresdefault.jpg',
+    sections: [
+      {
+        title: 'Arrays & Hashing',
+        videos: [
+          { title: 'Array Masterclass', description: 'Operations and time complexity.', youtube_url: 'https://www.youtube.com/watch?v=EAR7De6Gug4', duration_seconds: 1200 },
+          { title: 'Two Sum Problem', description: 'Solving the classic hashed search problem.', youtube_url: 'https://www.youtube.com/watch?v=UXDSeD9mN-k', duration_seconds: 800 },
         ]
       }
     ]
@@ -265,18 +394,30 @@ async function seed() {
     // 2. Insert Subjects
     console.log('📚 Inserting subjects...');
     for (const [subjectIndex, subjectData] of subjectsData.entries()) {
+      // Calculate total lessons
+      const total_lessons = (subjectData.sections as any[]).reduce((sum, section) => sum + (section.videos?.length || 0), 0);
+
       const [subjectId] = await db('subjects').insert({
         title: subjectData.title,
         slug: subjectData.slug,
         description: subjectData.description,
         is_published: subjectData.is_published,
+        thumbnail_url: (subjectData as any).thumbnail_url,
+        instructor_name: (subjectData as any).instructor_name,
+        instructor_channel: (subjectData as any).instructor_channel,
+        category: (subjectData as any).category,
+        level: (subjectData as any).level || 'Beginner',
+        duration_weeks: (subjectData as any).duration_weeks,
+        rating: (subjectData as any).rating || 4.5,
+        total_lessons: total_lessons,
+        is_free: (subjectData as any).is_free !== undefined ? (subjectData as any).is_free : true,
       });
 
       totalSubjects++;
       console.log(`  ➔ Added subject: ${subjectData.title} (ID: ${subjectId})`);
 
       // 3. Insert Sections for Subject
-      for (const [sectionIndex, sectionData] of subjectData.sections.entries()) {
+      for (const [sectionIndex, sectionData] of (subjectData.sections as any[]).entries()) {
         const [sectionId] = await db('sections').insert({
           subject_id: subjectId,
           title: sectionData.title,
@@ -288,7 +429,7 @@ async function seed() {
 
         // 4. Insert Videos for Section
         let videoOrder = 1;
-        for (const videoData of sectionData.videos) {
+        for (const videoData of (sectionData.videos as any[])) {
           await db('videos').insert({
             section_id: sectionId,
             title: videoData.title,

@@ -2,9 +2,12 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { CheckCircle2, Lock, PlayCircle, ChevronDown, ChevronRight, Clock } from 'lucide-react';
+import { 
+  CheckCircle2, Lock, PlayCircle, ChevronDown, 
+  ChevronRight, Clock, ShieldCheck, List, Layers 
+} from 'lucide-react';
 import { useSidebarStore } from '../../store/sidebarStore';
-import { useVideoStore } from '../../store/videoStore';
+import { useVideoStore } from '../../store/videoStore'; // Correct import path
 import apiClient from '../../lib/apiClient';
 import clsx from 'clsx';
 
@@ -38,50 +41,59 @@ export default function SubjectSidebar({ subjectId }: Props) {
   const pct = totalVideos > 0 ? Math.round((completedVideos / totalVideos) * 100) : 0;
 
   if (isLoading) return (
-    <div className="flex-1 p-4 space-y-3">
-      {[1,2,3,4,5].map(i => (
-        <div key={i} className="shimmer-line h-8 rounded-lg" style={{ animationDelay: `${i * 0.1}s` }} />
+    <div className="flex-1 p-6 space-y-4 bg-[#0d0d14]">
+      {[1,2,3,4,5,6].map(i => (
+        <div key={i} className="shimmer-line h-10 rounded-xl" style={{ animationDelay: `${i * 0.15}s` }} />
       ))}
     </div>
   );
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-[#0d0d14] select-none border-r border-slate-border/30">
       {/* Subject Header */}
-      <div className="px-4 py-4 border-b border-slate-border">
-        <h2 className="section-heading text-base text-white leading-tight mb-3">{subjectTitle}</h2>
-        <div className="flex items-center justify-between text-xs text-slate-text mb-2">
-          <span>{completedVideos}/{totalVideos} lessons</span>
-          <span className="text-gold font-medium">{pct}%</span>
+      <div className="px-6 py-8 border-b border-slate-border/20 bg-gradient-to-b from-[#0a0a0f] to-transparent">
+        <div className="inline-flex px-2 py-0.5 rounded bg-gold/10 text-gold text-[8px] font-black uppercase tracking-widest mb-3 border border-gold/20">
+           Curriculum
         </div>
-        <div className="progress-bar h-1.5">
-          <div className="progress-fill h-full" style={{ width: `${pct}%` }} />
+        <h2 className="font-serif text-xl md:text-2xl text-white leading-tight mb-6 drop-shadow-2xl">{subjectTitle}</h2>
+        
+        <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-slate-text mb-2.5">
+          <span className="flex items-center gap-1.5"><List size={10} className="text-gold" /> {completedVideos}/{totalVideos} mastered</span>
+          <span className="text-gold">{pct}%</span>
+        </div>
+        <div className="progress-bar h-1.5 shadow-inner">
+          <div className="progress-fill h-full rounded-full" style={{ width: `${pct}%` }} />
         </div>
       </div>
 
       {/* Section list */}
-      <nav className="flex-1 overflow-y-auto px-3 py-3 space-y-1.5">
-        {sections.map((section) => {
+      <nav className="flex-1 overflow-y-auto px-4 py-6 scrollbar-hide space-y-2">
+        {sections.map((section, idx) => {
           const isOpen = !collapsed[section.id];
           const sectionCompleted = section.videos.every((v) => v.is_completed);
 
           return (
-            <div key={section.id}>
+            <div key={section.id} className="animate-fade-up" style={{ animationDelay: `${idx * 0.05}s` }}>
               {/* Section header */}
               <button
                 onClick={() => toggleSection(section.id)}
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all"
-                style={{ color: sectionCompleted ? '#f0b429' : '#8b8fa8' }}>
+                className={clsx(
+                  "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all mb-1 border group",
+                  isOpen ? "bg-slate-glass/50 border-slate-border/50 text-white" : "bg-transparent border-transparent text-slate-text hover:bg-slate-glass/20 hover:text-white"
+                )}>
+                <div className={clsx(
+                  "w-5 h-5 rounded-lg flex items-center justify-center border transition-colors",
+                  sectionCompleted ? "bg-gold text-black border-gold" : "bg-slate-border/20 text-slate-text border-slate-border/50 group-hover:border-gold/30"
+                )}>
+                   {sectionCompleted ? <ShieldCheck size={12} /> : <Layers size={12} />}
+                </div>
                 <span className="flex-1 text-left">{section.title}</span>
-                <span className="text-[10px] font-normal normal-case">
-                  {section.videos.filter(v => v.is_completed).length}/{section.videos.length}
-                </span>
-                {isOpen ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
+                {isOpen ? <ChevronDown size={14} className="opacity-50" /> : <ChevronRight size={14} className="opacity-50" />}
               </button>
 
               {/* Videos */}
               {isOpen && (
-                <div className="ml-2 mt-1 space-y-0.5">
+                <div className="ml-4 mt-2 mb-4 space-y-1">
                   {section.videos.map((video) => {
                     const isActive = video.id === currentVideoId;
                     return (
@@ -90,30 +102,41 @@ export default function SubjectSidebar({ subjectId }: Props) {
                         href={video.locked ? '#' : `/subjects/${subjectId}/video/${video.id}`}
                         onClick={(e) => video.locked && e.preventDefault()}
                         className={clsx(
-                          'sidebar-item group',
-                          isActive ? 'sidebar-item-active' : 'sidebar-item-inactive',
-                          video.locked && 'opacity-50 cursor-not-allowed'
+                          'flex items-center gap-4 px-4 py-3 rounded-xl text-xs transition-all relative group',
+                          isActive ? 'bg-gold text-black font-bold shadow-lg shadow-gold/20 scale-[1.02] z-10' : 'text-slate-text hover:bg-slate-glass/30 hover:text-white',
+                          video.locked && 'opacity-40 grayscale cursor-not-allowed'
                         )}>
-                        {/* Status icon */}
-                        <span className="shrink-0">
+                        
+                        {/* Status icon/Visual pointer */}
+                        <div className="relative shrink-0 w-4 h-4 flex items-center justify-center">
                           {video.is_completed ? (
-                            <CheckCircle2 size={14} className="text-jade" />
+                            <CheckCircle2 size={16} className={isActive ? 'text-black' : 'text-jade'} />
                           ) : video.locked ? (
-                            <Lock size={13} className="text-slate-text" />
+                            <Lock size={14} className="text-slate-text" />
                           ) : isActive ? (
-                            <PlayCircle size={14} className="text-gold animate-pulse-gold" />
+                            <div className="w-2.5 h-2.5 rounded-full bg-black animate-pulse" />
                           ) : (
-                            <div className="w-3.5 h-3.5 rounded-full border border-slate-border" />
+                            <div className="w-1.5 h-1.5 rounded-full border-2 border-slate-border group-hover:border-gold/50 transition-colors" />
                           )}
+                        </div>
+
+                        <span className="flex-1 leading-snug line-clamp-2 uppercase tracking-tight font-medium">
+                          {video.title}
                         </span>
 
-                        <span className="flex-1 text-xs leading-snug line-clamp-2">{video.title}</span>
-
                         {video.duration_seconds && (
-                          <span className="shrink-0 flex items-center gap-0.5 text-[10px] text-slate-text">
-                            <Clock size={9} />
+                          <span className={clsx(
+                            "shrink-0 flex items-center gap-1 text-[9px] font-bold opacity-70",
+                            isActive ? "text-black" : "text-slate-text"
+                          )}>
+                            <Clock size={10} />
                             {formatDuration(video.duration_seconds)}
                           </span>
+                        )}
+                        
+                        {/* Active Glow */}
+                        {isActive && (
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-black rounded-l-xl opacity-30" />
                         )}
                       </Link>
                     );
@@ -124,6 +147,13 @@ export default function SubjectSidebar({ subjectId }: Props) {
           );
         })}
       </nav>
+      
+      {/* Footer Support/Contact Tip */}
+      <div className="px-6 py-6 border-t border-slate-border/20 bg-[#0a0a0f]/50">
+         <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-text text-center opacity-40">
+            Aura Premium Courseware
+         </p>
+      </div>
     </div>
   );
 }
